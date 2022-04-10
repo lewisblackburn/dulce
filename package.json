@@ -27,11 +27,14 @@
     ]
   },
   "dependencies": {
+    "@headlessui/react": "1.5.0",
     "@monaco-editor/react": "4.4.1",
+    "ioredis": "5.0.4",
     "monaco-editor": "0.33.0",
     "next": "12.1.4",
     "react": "18.0.0",
-    "react-dom": "18.0.0"
+    "react-dom": "18.0.0",
+    "swr": "1.2.2"
   },
   "devDependencies": {
     "@commitlint/cli": "16.2.3",
