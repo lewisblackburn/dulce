@@ -3,11 +3,11 @@ import { useRouter } from 'next/router';
 import Editor from '@monaco-editor/react';
 import { useEffect, useState } from 'react';
 import useSWR from 'swr';
-
-export const fetcher = (url: string) => fetch(url).then((res) => res.json());
+import { fetcher, useDebounce } from '@/lib';
 
 export default function File() {
   const [code, setCode] = useState(``);
+  const debouncedCode = useDebounce<string>(code, 1000);
   const [language, setLanguage] = useState(`typescript`);
   const { query } = useRouter();
 
@@ -22,6 +22,18 @@ export default function File() {
   useEffect(() => {
     if (data) setCode(data.value);
   }, [data]);
+
+  useEffect(() => {
+    if (query.slug) {
+      fetch(`/api/set`, {
+        method: `POST`,
+        body: JSON.stringify({
+          name: query.slug,
+          text: code,
+        }),
+      });
+    }
+  }, [debouncedCode]);
 
   if (data) {
     return (
@@ -57,21 +69,7 @@ export default function File() {
           }}
         />
         <div className="flex items-center justify-between bg-brand text-white p-5">
-          <button
-            onClick={() => {
-              if (query.slug) {
-                fetch(`/api/set`, {
-                  method: `POST`,
-                  body: JSON.stringify({
-                    name: query.slug,
-                    text: code,
-                  }),
-                });
-              }
-            }}
-          >
-            save
-          </button>
+          <div></div>
           <p>{language}</p>
         </div>
       </div>
