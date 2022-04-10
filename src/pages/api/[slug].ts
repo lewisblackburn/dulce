@@ -6,6 +6,7 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const key = req.query.slug;
+  // @ts-expect-error this is temporary
   const value = await redis.get(key);
 
   res.status(200).json({ value });
